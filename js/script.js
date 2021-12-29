@@ -60,32 +60,35 @@ function addCard(card, filename, sound) {
     invoke('storeMediaFile', 6, {
         "filename": filename,
         "url": card.src
-    });
-    invoke('addNote', 6, {
-        note: {
-            "deckName": card.deckName,
-            "modelName": "2. Picture Words",
-            "fields": {
-                "Word": card.name,
-                "Picture": '<img src="' + filename + '">',
-                "Gender, Personal Connection, Extra Info (Back side)": card.connection,
-                "Pronunciation (Recording and/or IPA)": sound.ipa + "[sound:" + sound.fileName + "]"
-            },
-            "options": {
-                "allowDuplicate": true
-            },
-            "tags": [
-                "Anki Daddo"
-            ],
-            "audio": {
-                "url": sound.fileUrl,
-                "filename": sound.fileName,
-                "skipHash": "7e2c2f954ef6051373ba916f000168dc",
-                "fields": [
-                    "Front"
-                ]
+    }).then(result => {
+        invoke('addNote', 6, {
+            note: {
+                "deckName": card.deckName,
+                "modelName": "2. Picture Words",
+                "fields": {
+                    "Word": card.name,
+                    "Picture": '<img src="' + filename + '">',
+                    "Gender, Personal Connection, Extra Info (Back side)": card.connection,
+                    "Pronunciation (Recording and/or IPA)": sound.ipa + "[sound:" + sound.fileName + "]"
+                },
+                "options": {
+                    "allowDuplicate": true
+                },
+                "tags": [
+                    "Anki Daddo"
+                ],
+                "audio": {
+                    "url": sound.fileUrl,
+                    "filename": sound.fileName,
+                    "skipHash": "7e2c2f954ef6051373ba916f000168dc",
+                    "fields": [
+                        "Front"
+                    ]
+                }
             }
-        }
+        }).then(result => {
+            alert('Card successfully added!');
+        });
     });
 }
 function sendOnAnki(card) {
