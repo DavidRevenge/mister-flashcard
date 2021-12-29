@@ -1,7 +1,7 @@
 # Mister Flashcard
 Simplifies inserting flashcard into Anki: for language learning purposes.
 # Dependencies
-Anki and AnkiConnect add-on (https://github.com/FooSoft/anki-connect)
+Anki (https://apps.ankiweb.net/) and AnkiConnect add-on (https://github.com/FooSoft/anki-connect)
 # If you give me a coffee, I'll gladly go and drink it :-D! <br>
 <a href="https://www.paypal.com/donate/?hosted_button_id=5EKCKBZF7Q7C4">![image](https://user-images.githubusercontent.com/767664/145684817-aa4cc3ce-379d-4ac9-8a34-b623b41fdc03.png)</a>
 
