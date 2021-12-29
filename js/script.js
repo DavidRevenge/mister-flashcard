@@ -1,4 +1,6 @@
-var SERVER_IP = 'http://127.0.0.1:8765';
+const SERVER_IP = 'http://127.0.0.1:8765';
+
+var defaultDeck = (!! localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 function invoke(action, version, params = {}) {
     return new Promise((resolve, reject) => {
@@ -44,7 +46,12 @@ function setDecks() {
     retrieveDeckNames().then(decks => {
         decks  = decks.filter(d => d.toLowerCase() !== 'predefinito');
         $.each(decks, function () {
-            $('#deckName').append($("<option />").val(this).text(this));
+            var option = $("<option />");
+            if (this.toString() === defaultDeck) { 
+                console.log('entrato');
+                option.attr('selected', 'selected'); 
+            }
+            $('#deckName').append(option.val(this).text(this));
         });
     });
 }
@@ -208,4 +215,7 @@ $(function () {
         $('#name').val(Util.capitalizeFirstLetter($(this).val()));
     });
     setDecks();
+    document.getElementById('deckName').addEventListener('change', function() {
+        localStorage.setItem('defaultDeck', this.value);
+    });
 });
