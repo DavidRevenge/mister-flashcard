@@ -159,7 +159,6 @@ class PhpCall {
                     let img = $('<img class="cardImage" style="width: 300px; cursor: pointer;" src="' + src + '" />');
                     $('#search-container').append(img);
                 });
-                //Dopo che ha finito
                 $('.cardImage').click(function () {
 
                     var name = $('#name').val() ? $('#name').val() : '';
