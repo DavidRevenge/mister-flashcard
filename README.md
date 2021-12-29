@@ -1,7 +1,7 @@
 # Mister Flashcard
-Simplifies inserting flashcard into Anki: for language learning purposes.
+**Simplifies inserting** flashcard into **Anki**: for **language learning** purposes.
 
-Based on the book "Fluent Forever: How to Learn Any Language Fast and Never Forget it".
+Based on the book **"Fluent Forever: How to Learn Any Language Fast and Never Forget it"**.
 # Dependencies
 Anki (https://apps.ankiweb.net/) and AnkiConnect add-on (https://github.com/FooSoft/anki-connect)
 # If you give me a coffee, I'll gladly go and drink it :-D! <br>
