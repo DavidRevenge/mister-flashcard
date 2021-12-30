@@ -84,11 +84,6 @@ class MisterFlashcard {
         });
     }
     static sendOnAnki(card) {
-        // MisterFlashcard.addCard(card, card.filename, {
-        //     ipa: card.ipa.text,
-        //     fileName: card.filename + '.mp3',
-        //     fileUrl: card.ipa.soundUrl
-        // });
         MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl));
     }
     static addSound(soundIPAHref) {
