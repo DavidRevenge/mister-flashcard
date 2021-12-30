@@ -30,8 +30,11 @@
                 </fieldset>
                 <fieldset>
                     <label for="word">IPA: </label><br />
-                    <p><input type="text" name="ipa" id="ipa"></p>
-                    <input type="hidden" name="ipaSound" id="ipaSound">
+                    <p>
+                        <input type="text" name="ipa" id="ipa">
+                        <input type="hidden" name="ipaSound" id="ipaSound">
+                        <input id="addMinimalPairs" type="button" value="Add Minimal Pairs">
+                    </p>
                     <form action="#">
                         <div style="border: 2px dashed black; display: inline-block; padding: 1rem;" id="audio-container">
                         </div>
