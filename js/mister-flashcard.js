@@ -3,7 +3,7 @@ const SERVER_IP = 'http://127.0.0.1:8765';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.1.0
+ * @version 1.1.1
  */
 class MisterFlashcard {
     static setDecks() {
@@ -69,30 +69,7 @@ class MisterFlashcard {
             "url": card.src
         }).then(result => {
             MisterFlashcard.invoke('addNote', 6, {
-                note: {
-                    "deckName": card.deckName,
-                    "modelName": "2. Picture Words",
-                    "fields": {
-                        "Word": card.name,
-                        "Picture": '<img src="' + filename + '">',
-                        "Gender, Personal Connection, Extra Info (Back side)": card.connection,
-                        "Pronunciation (Recording and/or IPA)": sound.ipa + "[sound:" + sound.fileName + "]"
-                    },
-                    "options": {
-                        "allowDuplicate": true
-                    },
-                    "tags": [
-                        "Anki Daddo"
-                    ],
-                    "audio": {
-                        "url": sound.fileUrl,
-                        "filename": sound.fileName,
-                        "skipHash": "7e2c2f954ef6051373ba916f000168dc",
-                        "fields": [
-                            "Front"
-                        ]
-                    }
-                }
+                note: new PictureWordsModel(card, filename, sound)
             }).then(result => {
                 alert('Card successfully added!');
             });
@@ -117,7 +94,42 @@ class MisterFlashcard {
     }
 
 }
-/** Classes */
+class PictureWordsModel {
+
+    "deckName" = "";
+    "modelName" = "2. Picture Words";
+    "fields" = {};
+    "options" = { "allowDuplicate": true };
+    "tags" = ["Anki Daddo"];
+    "audio" = {}
+    constructor(card, filename, sound) {
+        this.deckName = card.deckName;
+        this.fields = new FieldsModel(card, filename, sound);
+        this.audio = new AudioModel(sound);
+    }
+}
+class FieldsModel {
+    "Word" = '';
+    "Picture" = '';
+    "Gender, Personal Connection, Extra Info (Back side)" = '';
+    "Pronunciation (Recording and/or IPA)" = '';
+    constructor(card, filename, sound) {
+        this.Word = card.name;
+        this.Picture = '<img src="' + filename + '">';
+        this["Gender, Personal Connection, Extra Info (Back side)"] = card.connection;
+        this["Pronunciation (Recording and/or IPA)"] = sound.ipa + "[sound:" + sound.fileName + "]";
+    }
+}
+class AudioModel {
+    "url" = "";
+    "filename" = "";
+    "skipHash" = "7e2c2f954ef6051373ba916f000168dc";
+    "fields" = ["Front"];
+    constructor(sound) {
+        this.url = sound.fileUrl;
+        this.filename = sound.fileName;
+    }
+}
 class Util {
     static getFileName(card) {
         var date = new Date();
