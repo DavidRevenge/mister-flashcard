@@ -18,7 +18,6 @@ class MisterFlashcard {
             });
         });
     }
-
     static invoke(action, version, params = {}) {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -48,7 +47,7 @@ class MisterFlashcard {
             xhr.send(JSON.stringify({ action, version, params }));
         });
     }
-    /** * 
+    /**
      * @param text filename Example: "_dog_1582907679938.jpg"
      * @returns result
      */
@@ -86,16 +85,16 @@ class MisterFlashcard {
     static sendOnAnki(card) {
         MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl));
     }
-    static addSound(soundIPAHref) {
+    static addSound(soundIPAHref, soundTitle = false) {
         var player = document.getElementById("audio-container-player");
         player = $('#audio-container-player').clone().css('display', 'inline');
         $(player).children('source').attr('src', soundIPAHref);
         $('#audio-container').append(player).append('<input type="radio" name="ipaSoundRB" value="' + soundIPAHref + '" > <br />');
+        if (soundTitle !== false) $('#audio-container').append('<h5>'+soundTitle+'</h5>');
         /* Spunto il primo audio della lista */
         var firstAudio = $('#audio-container').children('input[type=radio]');
         $(firstAudio[0]).attr('checked', 'checked');
     }
-
 }
 class PictureWordsModel {
     "deckName" = "";
@@ -220,7 +219,10 @@ class PhpCall {
                     var soundIPAHref = 'https:' + $(this).attr('href');
                     MisterFlashcard.addSound(soundIPAHref);
                 } else if (lang === 'en') {
-                    PhpCall.getIpaSound(decodeURIComponent($(this).attr('href')));
+                    var soundTitle = $(this).parent().parent().find('.audiolink').text();
+                    var condition = soundTitle.toLowerCase().indexOf('uk') < 0; // && soundTitle.toLowerCase().indexOf('us') < 0;
+                    if (condition) return true;
+                    PhpCall.getIpaSound(decodeURIComponent($(this).attr('href')), soundTitle);
                 }
             });
         });
@@ -259,11 +261,11 @@ class PhpCall {
         });
 
     }
-    static getIpaSound(url) {
+    static getIpaSound(url, soundTitle = false) {
         jQuery.get('get_ipa_sound.php', { url: url }, function (data) {
             var soundHtml = $.parseHTML(data);
             var soundIPAHref = 'https:' + $('.internal', soundHtml).attr('href');
-            MisterFlashcard.addSound(soundIPAHref);
+            MisterFlashcard.addSound(soundIPAHref, soundTitle);
         });
     }
 }
