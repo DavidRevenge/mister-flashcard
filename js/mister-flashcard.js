@@ -3,7 +3,7 @@ const SERVER_IP = 'http://127.0.0.1:8765';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.2.0
+ * @version 1.2.2
  */
 class MisterFlashcard {
     static setDecks() {
@@ -21,7 +21,12 @@ class MisterFlashcard {
     static invoke(action, version, params = {}) {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.addEventListener('error', () => reject('failed to issue request'));
+            xhr.addEventListener(
+                'error', () => {
+                    reject('Aprire Anki!');
+                    alert('Aprire Anki!');
+                }
+            );
             xhr.addEventListener('load', () => {
                 try {
                     const response = JSON.parse(xhr.responseText);
@@ -90,7 +95,7 @@ class MisterFlashcard {
         player = $('#audio-container-player').clone().css('display', 'inline');
         $(player).children('source').attr('src', soundIPAHref);
         $('#audio-container').append(player).append('<input type="radio" name="ipaSoundRB" value="' + soundIPAHref + '" > <br />');
-        if (soundTitle !== false) $('#audio-container').append('<h5>'+soundTitle+'</h5>');
+        if (soundTitle !== false) $(player).before('<h5>' + soundTitle + '</h5>');
         /* Spunto il primo audio della lista */
         var firstAudio = $('#audio-container').children('input[type=radio]');
         $(firstAudio[0]).attr('checked', 'checked');
@@ -155,7 +160,7 @@ class AudioModel {
 class SoundModel {
     ipa = "";
     filename = "";
-    fileUrl = "";    
+    fileUrl = "";
     constructor(ipa, filename, fileUrl) {
         this.ipa = ipa;
         this.filename = filename;
@@ -203,7 +208,9 @@ class PhpCall {
             result = $('.IPA, .ipa', html);
             $('#ipa-container').empty();
             result.each(function () {
-                $('#ipa-container').append('<a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + $(this).text() + '</a><br />');
+                
+                var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
+                $('#ipa-container').append('<h5>'+ ipaTitle + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + $(this).text() + '</a><br />');
             });
             $('.searchedIPA').click(function () {
                 $('input#ipa').val($(this).text())
@@ -214,6 +221,7 @@ class PhpCall {
                 var soundIPAUrls = $('.internal', html);
             }
             $('#audio-container').empty();
+            var foundIt = false;
             $(soundIPAUrls).each(function () {
                 if (lang === 'de' && $(this).attr('href').indexOf('upload') >= 1) {
                     var soundIPAHref = 'https:' + $(this).attr('href');
@@ -222,9 +230,13 @@ class PhpCall {
                     var soundTitle = $(this).parent().parent().find('.audiolink').text();
                     var condition = soundTitle.toLowerCase().indexOf('uk') < 0; // && soundTitle.toLowerCase().indexOf('us') < 0;
                     if (condition) return true;
+                    foundIt = true;
                     PhpCall.getIpaSound(decodeURIComponent($(this).attr('href')), soundTitle);
                 }
             });
+            if ( ! foundIt) {
+                PhpCall.getIpaSound(word, 'Oxford Sound', true);
+            }
         });
     }
     static searchWord(word) {
@@ -261,12 +273,20 @@ class PhpCall {
         });
 
     }
-    static getIpaSound(url, soundTitle = false) {
-        jQuery.get('get_ipa_sound.php', { url: url }, function (data) {
-            var soundHtml = $.parseHTML(data);
-            var soundIPAHref = 'https:' + $('.internal', soundHtml).attr('href');
-            MisterFlashcard.addSound(soundIPAHref, soundTitle);
-        });
+    static getIpaSound(url = false, soundTitle = false, otherWebsite = false) {
+        if (otherWebsite === true) {
+            jQuery.get('get_ipa_sound.php', { url: url, otherWebsite: true }, function (data) {
+                var soundHtml = $.parseHTML(data);
+                var soundIPAHref = $('.phons_br', soundHtml).find('.pron-uk').attr('data-src-ogg');
+                MisterFlashcard.addSound(soundIPAHref, soundTitle);
+            });        
+        } else {
+            jQuery.get('get_ipa_sound.php', { url: url }, function (data) {
+                var soundHtml = $.parseHTML(data);
+                var soundIPAHref = 'https:' + $('.internal', soundHtml).attr('href');
+                MisterFlashcard.addSound(soundIPAHref, soundTitle);
+            });
+        }
     }
 }
 /* ON READY! */
