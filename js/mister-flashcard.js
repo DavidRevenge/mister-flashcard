@@ -101,6 +101,19 @@ class MisterFlashcard {
         $(firstAudio[0]).attr('checked', 'checked');
     }
 }
+class Ipa {
+    static append(text, title) {
+        $('#ipa-container').append('<h5>'+ title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
+    }
+    static prepend(text, title) {
+        $('#ipa-container').prepend('<h5>'+ title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
+    }
+}
+class Input {
+    static setIpa(text) {
+        $('input#ipa').val(text);
+    }
+}
 class PictureWordsModel {
     "deckName" = "";
     "modelName" = "2. Picture Words";
@@ -207,13 +220,17 @@ class PhpCall {
             var html = $.parseHTML(data);
             result = $('.IPA, .ipa', html);
             $('#ipa-container').empty();
-            result.each(function () {
-                
+
+            //auto set first ipa
+            Input.setIpa(result[0].innerText);
+
+            result.each(function () {                
                 var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
-                $('#ipa-container').append('<h5>'+ ipaTitle + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + $(this).text() + '</a><br />');
+                // $('#ipa-container').append('<h5>'+ ipaTitle + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + $(this).text() + '</a><br />');
+                Ipa.append($(this).text(), ipaTitle);
             });
             $('.searchedIPA').click(function () {
-                $('input#ipa').val($(this).text())
+                Input.setIpa($(this).text());
             })
             if (lang === 'en') {
                 var soundIPAUrls = $('.audiometa a', html);
@@ -278,6 +295,11 @@ class PhpCall {
             jQuery.get('get_ipa_sound.php', { url: url, otherWebsite: true }, function (data) {
                 var soundHtml = $.parseHTML(data);
                 var soundIPAHref = $('.phons_br', soundHtml).find('.pron-uk').attr('data-src-ogg');
+
+                var ipa = $('.phons_br', soundHtml).find('.phon').text();
+                Ipa.prepend(ipa);
+                Input.setIpa(ipa);
+
                 MisterFlashcard.addSound(soundIPAHref, soundTitle);
             });        
         } else {
