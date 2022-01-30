@@ -1,0 +1,10 @@
+.sample-img {
+    width: 300px;
+}
+#preview .nameBox span {
+    font-size: 1.3rem;
+}
+#preview .ipaBox span {
+    font-size: 1.3rem;
+    color: blue;
+}

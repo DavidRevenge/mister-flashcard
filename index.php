@@ -7,12 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 p-4">
+            <div class="col-6 p-4">
                 <fieldset>
                     <p>
                         <label for="name">Name: </label>
@@ -58,11 +59,23 @@
                     <option value="de">German</option>
                 </select>
 
-                <br /> <br />
-
-                <div id="search-container">
-
+            </div>
+            <div id="preview" class="col-4 pt-4 text-center">
+                <div class="nameBox">
+                     <span>Nome di prova</span>
                 </div>
+                <hr />
+                <div class="imgBox">
+                    <img class="sample-img" src="img/sample-img.jpg">
+                </div>
+                <div class="ipaBox pt-3">
+                    <span>/bɔːl/</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="search-container">
+
             </div>
         </div>
     </div>
