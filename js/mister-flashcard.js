@@ -108,6 +108,13 @@ class Ipa {
     static prepend(text, title) {
         $('#ipa-container').prepend('<h5>'+ title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
     }
+    static printList(result) {
+        result.each(function (index) {                
+            if (index >= 2) return false;
+            var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
+            Ipa.append($(this).text(), ipaTitle);
+        });
+    }
 }
 class Input {
     static setIpa(text) {
@@ -224,11 +231,12 @@ class PhpCall {
             //auto set first ipa
             Input.setIpa(result[0].innerText);
 
-            result.each(function () {                
-                var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
-                // $('#ipa-container').append('<h5>'+ ipaTitle + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + $(this).text() + '</a><br />');
-                Ipa.append($(this).text(), ipaTitle);
-            });
+            // result.each(function (index) {                
+            //     if (index >= 2) return false;
+            //     var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
+            //     Ipa.append($(this).text(), ipaTitle);
+            // });
+            Ipa.printList(result);
             $('.searchedIPA').click(function () {
                 Input.setIpa($(this).text());
             })
