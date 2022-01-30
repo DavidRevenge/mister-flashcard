@@ -87,7 +87,7 @@ class MisterFlashcard {
             alert('Card successfully added!');
         });
     }
-    static sendOnAnki(card) {
+    static sendToAnki(card) {
         MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl));
     }
     static addSound(soundIPAHref, soundTitle = false) {
@@ -99,6 +99,12 @@ class MisterFlashcard {
         /* Spunto il primo audio della lista */
         var firstAudio = $('#audio-container').children('input[type=radio]');
         $(firstAudio[0]).attr('checked', 'checked');
+    }
+}
+class Card {
+    static setName(name) {
+        $('#name').val(name);
+        $('.nameBox span').text(name);
     }
 }
 class Ipa {
@@ -119,6 +125,7 @@ class Ipa {
 class Input {
     static setIpa(text) {
         $('input#ipa').val(text);
+        $('.ipaBox span').text(text);
     }
 }
 class PictureWordsModel {
@@ -289,7 +296,12 @@ class PhpCall {
                     var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
                     var deckName = $('#deckName').children('option:selected').val();
                     var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
-                    if (confirm('Inviare su Anki?')) MisterFlashcard.sendOnAnki(card);
+                   // if (confirm('Inviare su Anki?')) MisterFlashcard.sendToAnki(card);
+                   $('.sample-img').attr('src', src);
+                   $('#sendToAnki').click(function() {
+                       MisterFlashcard.sendToAnki(card);
+                   });
+
                 });
             },
             fail: function (xhr, textStatus, errorThrown) {
@@ -330,7 +342,10 @@ $(function () {
         event.stopPropagation();
     });
     $('#word').keyup(function (event) {
-        $('#name').val(Util.capitalizeFirstLetter($(this).val()));
+        var name = Util.capitalizeFirstLetter($(this).val());
+        // $('#name').val(name);
+        // $('.nameBox span').text(name);
+        Card.setName(name);
     });
     MisterFlashcard.setDecks();
     document.getElementById('deckName').addEventListener('change', function () {

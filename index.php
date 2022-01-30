@@ -62,15 +62,16 @@
             </div>
             <div id="preview" class="col-4 pt-4 text-center">
                 <div class="nameBox">
-                     <span>Nome di prova</span>
+                     <span>Name</span>
                 </div>
                 <hr />
                 <div class="imgBox">
                     <img class="sample-img" src="img/sample-img.jpg">
                 </div>
-                <div class="ipaBox pt-3">
-                    <span>/bɔːl/</span>
+                <div class="ipaBox pt-3 mb-5">
+                    <span>/ipa/</span>
                 </div>
+                <button id="sendToAnki" class="btn btn-primary w-100">Send</button>
             </div>
         </div>
         <div class="row">
