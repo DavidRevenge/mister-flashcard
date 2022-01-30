@@ -13,7 +13,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-6 p-4">
+            <div class="col-12 col-lg-6 p-4">
                 <fieldset>
                     <p>
                         <label for="name">Name: </label>
@@ -60,7 +60,7 @@
                 </select>
 
             </div>
-            <div id="preview" class="col-4 pt-4 text-center">
+            <div id="preview" class="col-12 col-md-4 pt-4 text-center">
                 <div class="nameBox">
                      <span>Name</span>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="ipaBox pt-3 mb-5">
                     <span>/ipa/</span>
                 </div>
-                <button id="sendToAnki" class="btn btn-primary w-100">Send</button>
+                <button id="sendToAnki" class="btn btn-primary w-100 mb-5">Send</button>
             </div>
         </div>
         <div class="row">
