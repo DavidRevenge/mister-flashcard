@@ -3,7 +3,7 @@ const SERVER_IP = 'http://127.0.0.1:8765';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.3.0
+ * @version 1.3.1
  */
 class MisterFlashcard {
     static setDecks() {
@@ -70,12 +70,13 @@ class MisterFlashcard {
         if (minimalPairs === true) {
             MisterFlashcard.invokeAddNote(card, filename, sound, minimalPairs);
         } else {
-            filename = filename + ".jpg";
-            MisterFlashcard.invoke('storeMediaFile', 6, {
-                "filename": filename,
-                //"url": card.src
-                "data": card.base64
-            }).then(result => {
+            filename = filename + Date.now() +  ".jpg";
+            var data = {
+                "filename": filename
+            }
+            if (card.base64 === false) data['url'] = card.src;
+            else data['data'] = card.base64;
+            MisterFlashcard.invoke('storeMediaFile', 6, data).then(result => {
                 MisterFlashcard.invokeAddNote(card, filename, sound, minimalPairs);
             });
         }
@@ -107,7 +108,8 @@ class Preview {
     static initCrop(card) {
         $('#openCropSampleImg').unbind('click');
         $('#openCropSampleImg').click(function () {
-            $('#sendToAnki').unbind('click');
+            Preview.enableCropSend();
+            $('#sendToAnkiOnCrop').unbind('click');
             $('#closeCropSampleImg').unbind('click');
             var el = document.getElementById('sampleImg');
             var resize = new Croppie(el, {
@@ -118,7 +120,7 @@ class Preview {
                 enableOrientation: true,
                 mouseWheelZoom: 'ctrl'
             });
-            $('#sendToAnki').click(function () {
+            $('#sendToAnkiOnCrop').click(function () {
                 resize.result('base64').then(function (base64) {
                     card.setBase64(Util.cleanBase64(base64));
                     MisterFlashcard.sendToAnki(card);
@@ -129,10 +131,19 @@ class Preview {
                 resize.destroy();
                 $(this).addClass('d-none');
                 $('#openCropSampleImg').removeClass('d-none');
+                Preview.disableCropSend();
             });
             $(this).addClass('d-none');
             $('#closeCropSampleImg').removeClass('d-none');
         });
+    }
+    static enableCropSend() {
+        $('#sendToAnki').addClass('d-none');
+        $('#sendToAnkiOnCrop').removeClass('d-none');
+    }
+    static disableCropSend() {        
+        $('#sendToAnkiOnCrop').addClass('d-none');
+        $('#sendToAnki').removeClass('d-none');
     }
 }
 class Card {
@@ -238,7 +249,7 @@ class CardModel {
         text: "",
         soundUrl: ""
     }
-    base64 = "";
+    base64 = false;
     constructor(name, connection, src, deckName, ipaText, ipaSound) {
         this.name = name;
         this.connection = connection;
@@ -352,9 +363,11 @@ class PhpCall {
 
                     Preview.initCrop(card);
 
-                    // $('#sendToAnki').click(function () {
-                    //     MisterFlashcard.sendToAnki(card);
-                    // });
+                    $('#sendToAnki').unbind('click');
+                     $('#sendToAnki').click(function () {
+                        card.setBase64(false);
+                         MisterFlashcard.sendToAnki(card);
+                     });
 
                 });
             },

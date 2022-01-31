@@ -74,6 +74,7 @@
                 </div>
                 <button id="openCropSampleImg" class="btn btn-primary w-50 mb-5">Open Crop</button>
                 <button id="closeCropSampleImg" class="btn btn-danger w-50 mb-5 d-none">Close Crop</button>
+                <button id="sendToAnkiOnCrop" class="btn btn-primary w-50 mb-5 d-none">Send</button>
                 <button id="sendToAnki" class="btn btn-primary w-50 mb-5">Send</button>
             </div>
         </div>
