@@ -285,6 +285,7 @@ class Util {
 }
 class PhpCall {
     static searchIPA(word) {
+        word = word.trim();
         var result;
         var lang = $('#languages').children('option:selected').val();
         jQuery.get('get_ipa.php', { word: word, lang: lang }, function (data) {
