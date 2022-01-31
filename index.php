@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/croppie.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
@@ -65,13 +66,15 @@
                      <span>Name</span>
                 </div>
                 <hr />
-                <div class="imgBox">
-                    <img class="sample-img" src="img/sample-img.jpg">
+                <div id="imgBox" class="imgBox">
+                   <img id="sampleImg" class="sample-img" src="img/sample-img.jpg">
                 </div>
                 <div class="ipaBox pt-3 mb-5">
                     <span>/ipa/</span>
                 </div>
-                <button id="sendToAnki" class="btn btn-primary w-100 mb-5">Send</button>
+                <button id="openCropSampleImg" class="btn btn-primary w-50 mb-5">Open Crop</button>
+                <button id="closeCropSampleImg" class="btn btn-danger w-50 mb-5 d-none">Close Crop</button>
+                <button id="sendToAnki" class="btn btn-primary w-50 mb-5">Send</button>
             </div>
         </div>
         <div class="row">
@@ -82,6 +85,7 @@
     </div>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/croppie.min.js"></script>
     <script src="js/mister-flashcard.js"></script>
 </body>
 

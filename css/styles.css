@@ -8,3 +8,11 @@
     font-size: 1.3rem;
     color: blue;
 }
+.sample-img {
+    display: block;
+  
+    /* This rule is very important, please don't ignore this */
+    max-width: 100%;
+
+    margin: 0 auto;
+  }

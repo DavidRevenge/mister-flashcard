@@ -73,7 +73,8 @@ class MisterFlashcard {
             filename = filename + ".jpg";
             MisterFlashcard.invoke('storeMediaFile', 6, {
                 "filename": filename,
-                "url": card.src
+                //"url": card.src
+                "data": card.base64
             }).then(result => {
                 MisterFlashcard.invokeAddNote(card, filename, sound, minimalPairs);
             });
@@ -101,6 +102,39 @@ class MisterFlashcard {
         $(firstAudio[0]).attr('checked', 'checked');
     }
 }
+
+class Preview {
+    static initCrop(card) {
+        $('#openCropSampleImg').unbind('click');
+        $('#openCropSampleImg').click(function () {
+            $('#sendToAnki').unbind('click');
+            $('#closeCropSampleImg').unbind('click');
+            var el = document.getElementById('sampleImg');
+            var resize = new Croppie(el, {
+                viewport: { width: 100, height: 100 },
+                boundary: { width: 300, height: 300 },
+                showZoomer: true,
+                enableResize: true,
+                enableOrientation: true,
+                mouseWheelZoom: 'ctrl'
+            });
+            $('#sendToAnki').click(function () {
+                resize.result('base64').then(function (base64) {
+                    card.setBase64(Util.cleanBase64(base64));
+                    MisterFlashcard.sendToAnki(card);
+                    $('#closeCropSampleImg').click();
+                });
+            });
+            $('#closeCropSampleImg').click(function () {
+                resize.destroy();
+                $(this).addClass('d-none');
+                $('#openCropSampleImg').removeClass('d-none');
+            });
+            $(this).addClass('d-none');
+            $('#closeCropSampleImg').removeClass('d-none');
+        });
+    }
+}
 class Card {
     static setName(name) {
         $('#name').val(name);
@@ -109,13 +143,13 @@ class Card {
 }
 class Ipa {
     static append(text, title) {
-        $('#ipa-container').append('<h5>'+ title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
+        $('#ipa-container').append('<h5>' + title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
     }
     static prepend(text, title) {
-        $('#ipa-container').prepend('<h5>'+ title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
+        $('#ipa-container').prepend('<h5>' + title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
     }
     static printList(result) {
-        result.each(function (index) {                
+        result.each(function (index) {
             if (index >= 2) return false;
             var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
             Ipa.append($(this).text(), ipaTitle);
@@ -204,6 +238,7 @@ class CardModel {
         text: "",
         soundUrl: ""
     }
+    base64 = "";
     constructor(name, connection, src, deckName, ipaText, ipaSound) {
         this.name = name;
         this.connection = connection;
@@ -213,8 +248,16 @@ class CardModel {
         this.ipa.text = ipaText;
         this.ipa.soundUrl = ipaSound;
     }
+    setBase64(base64) {
+        this.base64 = base64;
+    }
+
 }
 class Util {
+    static cleanBase64(base64) {
+        var base64 = base64.replace("data:image/png;base64,", "");
+        return base64 = base64.replace("data:image/jpeg;base64,", "");
+    }
     static getFileName(name) {
         var date = new Date();
         var timestamp = date.getTime();
@@ -238,12 +281,8 @@ class PhpCall {
             //auto set first ipa
             Input.setIpa(result[0].innerText);
 
-            // result.each(function (index) {                
-            //     if (index >= 2) return false;
-            //     var ipaTitle = $(this).closest('li').find('.qualifier-content a').html();
-            //     Ipa.append($(this).text(), ipaTitle);
-            // });
             Ipa.printList(result);
+
             $('.searchedIPA').click(function () {
                 Input.setIpa($(this).text());
             })
@@ -266,7 +305,7 @@ class PhpCall {
                     PhpCall.getIpaSound(decodeURIComponent($(this).attr('href')), soundTitle);
                 }
             });
-            if ( ! foundIt) {
+            if (!foundIt) {
                 PhpCall.getIpaSound(word, 'Oxford Sound', true);
             }
         });
@@ -288,19 +327,34 @@ class PhpCall {
                     let img = $('<img class="cardImage" style="width: 300px; cursor: pointer;" src="' + src + '" />');
                     $('#search-container').append(img);
                 });
-                $('.cardImage').click(function () {
 
+
+                $('.cardImage').click(function () {
                     var name = $('#name').val() ? $('#name').val() : '';
                     var connection = $('#connection').val();
                     var src = $(this).attr('src');
                     var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
                     var deckName = $('#deckName').children('option:selected').val();
                     var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
-                   // if (confirm('Inviare su Anki?')) MisterFlashcard.sendToAnki(card);
-                   $('.sample-img').attr('src', src);
-                   $('#sendToAnki').click(function() {
-                       MisterFlashcard.sendToAnki(card);
-                   });
+                    // if (confirm('Inviare su Anki?')) MisterFlashcard.sendToAnki(card);
+
+                    $.ajax('download_image.php', {
+                        type: 'GET',
+                        timeout: 5000,
+                        data: { url: src, imgName: name },
+                        success: function (data, status, xhr) {
+                            $("#sampleImg").attr('src', 'img/' + name + '.jpg');
+                        },
+                        fail: function (xhr, textStatus, errorThrown) {
+                            console.log('request base64 failed');
+                        }
+                    });
+
+                    Preview.initCrop(card);
+
+                    // $('#sendToAnki').click(function () {
+                    //     MisterFlashcard.sendToAnki(card);
+                    // });
 
                 });
             },
@@ -321,7 +375,7 @@ class PhpCall {
                 Input.setIpa(ipa);
 
                 MisterFlashcard.addSound(soundIPAHref, soundTitle);
-            });        
+            });
         } else {
             jQuery.get('get_ipa_sound.php', { url: url }, function (data) {
                 var soundHtml = $.parseHTML(data);
