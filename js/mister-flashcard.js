@@ -3,7 +3,7 @@ const SERVER_IP = 'http://127.0.0.1:8765';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.2.2
+ * @version 1.3.0
  */
 class MisterFlashcard {
     static setDecks() {
