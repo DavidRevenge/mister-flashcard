@@ -3,7 +3,7 @@ const SERVER_IP = 'http://127.0.0.1:8765';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.3.1
+ * @version 1.3.2
  */
 class MisterFlashcard {
     static setDecks() {
@@ -82,6 +82,7 @@ class MisterFlashcard {
         }
     }
     static invokeAddNote(card, filename, sound, minimalPairs = false) {
+        card.refreshDeskName();
         var note = (minimalPairs === true) ? new BasicModel(card, sound, document.getElementById('word').value) : new PictureWordsModel(card, filename, sound);
         MisterFlashcard.invoke('addNote', 6, {
             note: note
@@ -250,14 +251,17 @@ class CardModel {
         soundUrl: ""
     }
     base64 = false;
-    constructor(name, connection, src, deckName, ipaText, ipaSound) {
+    constructor(name, connection, src, ipaText, ipaSound) {
         this.name = name;
         this.connection = connection;
         this.src = src;
-        this.deckName = deckName;
+        this.deckName = $('#deckName').children('option:selected').val();
         this.filename = Util.getFileName(name);
         this.ipa.text = ipaText;
         this.ipa.soundUrl = ipaSound;
+    }
+    refreshDeskName() {
+        this.deckName = $('#deckName').children('option:selected').val();
     }
     setBase64(base64) {
         this.base64 = base64;
@@ -345,9 +349,9 @@ class PhpCall {
                     var connection = $('#connection').val();
                     var src = $(this).attr('src');
                     var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
-                    var deckName = $('#deckName').children('option:selected').val();
-                    var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
-                    // if (confirm('Inviare su Anki?')) MisterFlashcard.sendToAnki(card);
+                    //var deckName = $('#deckName').children('option:selected').val();
+                    //var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
+                    var card = new CardModel(name, connection, src, $('input#ipa').val(), ipaSound);
 
                     $.ajax('download_image.php', {
                         type: 'GET',
@@ -422,8 +426,7 @@ $(function () {
         if (confirm('Inviare su Anki?')) {
             var name = $('#name').val() ? $('#name').val() : '';
             var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
-            var deckName = $('#deckName').children('option:selected').val();
-            var card = new CardModel(name, "", "", deckName, $('input#ipa').val(), ipaSound);
+            var card = new CardModel(name, "", "", $('input#ipa').val(), ipaSound);
             MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl), true);
         }
     })
