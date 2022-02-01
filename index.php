@@ -13,6 +13,7 @@
 
 <body>
     <div class="container-fluid">
+    <div class="loader"></div>
         <div class="row">
             <div class="col-12 col-lg-6 p-4">
                 <fieldset>

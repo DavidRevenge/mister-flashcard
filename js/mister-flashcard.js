@@ -4,7 +4,7 @@ const DOWNLOAD_FOLDER = 'img/download/';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.3.2
+ * @version 1.3.3
  */
 class MisterFlashcard {
     static setDecks() {
@@ -293,6 +293,12 @@ class Util {
     static capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+    static showLoader() {
+        $('.loader').addClass('on');
+    }
+    static hideLoader() {
+        $('.loader').removeClass('on');
+    }
 }
 class PhpCall {
     static searchIPA(word) {
@@ -338,6 +344,7 @@ class PhpCall {
         });
     }
     static searchWord(word) {
+        Util.showLoader();
         var word = ($('#languages').children('option:selected').val() !== 'de') ? $('#word').val().toLowerCase() : $('#word').val();
         PhpCall.searchIPA(word);
         $.ajax('get_images.php', {
@@ -345,6 +352,7 @@ class PhpCall {
             timeout: 5000,
             data: { word: word },
             success: function (data, status, xhr) {
+                Util.hideLoader();
                 data = data.split("\\/").join('/');
                 data = JSON.parse(data).data;
 
@@ -357,6 +365,7 @@ class PhpCall {
 
 
                 $('.cardImage').click(function () {
+                    Util.showLoader();
                     var name = $('#name').val() ? $('#name').val() : '';
                     var connection = $('#connection').val();
                     var src = $(this).attr('src');
@@ -371,6 +380,7 @@ class PhpCall {
                         data: { url: src, imgName: name },
                         success: function (data, status, xhr) {
                             $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg');
+                            Util.hideLoader();
                         },
                         fail: function (xhr, textStatus, errorThrown) {
                             console.log('request base64 failed');
