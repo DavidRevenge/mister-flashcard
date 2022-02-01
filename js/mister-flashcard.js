@@ -1,4 +1,5 @@
 const SERVER_IP = 'http://127.0.0.1:8765';
+const DOWNLOAD_FOLDER = 'img/download/';
 
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
@@ -369,7 +370,7 @@ class PhpCall {
                         timeout: 5000,
                         data: { url: src, imgName: name },
                         success: function (data, status, xhr) {
-                            $("#sampleImg").attr('src', 'img/download/' + name + '.jpg');
+                            $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg');
                         },
                         fail: function (xhr, textStatus, errorThrown) {
                             console.log('request base64 failed');

@@ -1,12 +1,14 @@
 
 <?php
 
+$downloadFolder = 'img/download/';
+
 $url = $_GET['url'];
 echo $_GET['imgName'];
-$img = 'img/' . $_GET['imgName'] . '.jpg';
+$img = $downloadFolder . $_GET['imgName'] . '.jpg';
 
 /** Empty img folder */
-$files = glob('img/download/*'); // get all file names
+$files = glob($downloadFolder.'*'); // get all file names
 foreach ($files as $file) { // iterate files
     if (is_file($file)) {
         unlink($file); // delete file

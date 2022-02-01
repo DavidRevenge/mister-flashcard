@@ -67,7 +67,7 @@
                 </div>
                 <hr />
                 <div id="imgBox" class="imgBox">
-                   <img id="sampleImg" class="sample-img" src="img/sample-img.jpg">
+                   <img id="sampleImg" class="sample-img" src="img/sample.jpg">
                 </div>
                 <div class="ipaBox pt-3 mb-5">
                     <span>/ipa/</span>
