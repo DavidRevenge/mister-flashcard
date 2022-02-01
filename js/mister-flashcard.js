@@ -70,7 +70,7 @@ class MisterFlashcard {
         if (minimalPairs === true) {
             MisterFlashcard.invokeAddNote(card, filename, sound, minimalPairs);
         } else {
-            filename = filename + Date.now() +  ".jpg";
+            filename = filename + Date.now() + ".jpg";
             var data = {
                 "filename": filename
             }
@@ -106,6 +106,12 @@ class MisterFlashcard {
 }
 
 class Preview {
+    static setIpa(text) {
+        $('#preview .ipaBox span').text(text);
+    }
+    static setName(text) {
+        $('#preview .nameBox span').text(text);
+    }
     static initCrop(card) {
         $('#openCropSampleImg').unbind('click');
         $('#openCropSampleImg').click(function () {
@@ -142,17 +148,17 @@ class Preview {
         $('#sendToAnki').addClass('d-none');
         $('#sendToAnkiOnCrop').removeClass('d-none');
     }
-    static disableCropSend() {        
+    static disableCropSend() {
         $('#sendToAnkiOnCrop').addClass('d-none');
         $('#sendToAnki').removeClass('d-none');
     }
 }
-class Card {
-    static setName(name) {
-        $('#name').val(name);
-        $('.nameBox span').text(name);
-    }
-}
+// class Card {
+//     static setName(name) {
+//         $('#name').val(name);
+//         $('.nameBox span').text(name);
+//     }
+// }
 class Ipa {
     static append(text, title) {
         $('#ipa-container').append('<h5>' + title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
@@ -171,7 +177,11 @@ class Ipa {
 class Input {
     static setIpa(text) {
         $('input#ipa').val(text);
-        $('.ipaBox span').text(text);
+        Preview.setIpa(text);
+    }
+    static setName(name) {
+        $('#name').val(name);
+        Preview.setName(name);
     }
 }
 class PictureWordsModel {
@@ -251,13 +261,13 @@ class CardModel {
         soundUrl: ""
     }
     base64 = false;
-    constructor(name, connection, src, ipaText, ipaSound) {
+    constructor(name, connection, src, ipaSound) {
         this.name = name;
         this.connection = connection;
         this.src = src;
         this.deckName = $('#deckName').children('option:selected').val();
         this.filename = Util.getFileName(name);
-        this.ipa.text = ipaText;
+        this.ipa.text = $('input#ipa').val();
         this.ipa.soundUrl = ipaSound;
     }
     refreshDeskName() {
@@ -352,7 +362,7 @@ class PhpCall {
                     var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
                     //var deckName = $('#deckName').children('option:selected').val();
                     //var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
-                    var card = new CardModel(name, connection, src, $('input#ipa').val(), ipaSound);
+                    var card = new CardModel(name, connection, src, ipaSound);
 
                     $.ajax('download_image.php', {
                         type: 'GET',
@@ -369,10 +379,10 @@ class PhpCall {
                     Preview.initCrop(card);
 
                     $('#sendToAnki').unbind('click');
-                     $('#sendToAnki').click(function () {
+                    $('#sendToAnki').click(function () {
                         card.setBase64(false);
-                         MisterFlashcard.sendToAnki(card);
-                     });
+                        MisterFlashcard.sendToAnki(card);
+                    });
 
                 });
             },
@@ -415,19 +425,20 @@ $(function () {
     });
     $('#word').keyup(function (event) {
         var name = Util.capitalizeFirstLetter($(this).val());
-        // $('#name').val(name);
-        // $('.nameBox span').text(name);
-        Card.setName(name);
+        Input.setName(name);
     });
     MisterFlashcard.setDecks();
     document.getElementById('deckName').addEventListener('change', function () {
         localStorage.setItem('defaultDeck', this.value);
     });
+    document.getElementById('ipa').addEventListener('keyup', function () {
+        Preview.setIpa(this.value);
+    });
     document.getElementById('addMinimalPairs').addEventListener('click', function () {
         if (confirm('Inviare su Anki?')) {
             var name = $('#name').val() ? $('#name').val() : '';
             var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
-            var card = new CardModel(name, "", "", $('input#ipa').val(), ipaSound);
+            var card = new CardModel(name, "", "", ipaSound);
             MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl), true);
         }
     })
