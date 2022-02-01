@@ -68,6 +68,7 @@ class MisterFlashcard {
         return MisterFlashcard.invoke('deckNames', 6);
     }
     static addCard(card, filename, sound, minimalPairs = false) {
+        Util.showLoader();
         if (minimalPairs === true) {
             MisterFlashcard.invokeAddNote(card, filename, sound, minimalPairs);
         } else {
@@ -88,6 +89,7 @@ class MisterFlashcard {
         MisterFlashcard.invoke('addNote', 6, {
             note: note
         }).then(result => {
+            Util.hideLoader();
             alert('Card successfully added!');
         });
     }
@@ -312,7 +314,7 @@ class PhpCall {
             $('#ipa-container').empty();
 
             //auto set first ipa
-            Input.setIpa(result[0].innerText);
+            if ( !! result[0]) Input.setIpa(result[0].innerText);
 
             Ipa.printList(result);
 
