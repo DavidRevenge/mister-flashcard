@@ -84,7 +84,7 @@ class MisterFlashcard {
         }
     }
     static invokeAddNote(card, filename, sound, minimalPairs = false) {
-        card.refreshDeskName();
+        card.refresh();
         var note = (minimalPairs === true) ? new BasicModel(card, sound, document.getElementById('word').value) : new PictureWordsModel(card, filename, sound);
         MisterFlashcard.invoke('addNote', 6, {
             note: note
@@ -264,9 +264,9 @@ class CardModel {
         soundUrl: ""
     }
     base64 = false;
-    constructor(name, connection, src, ipaSound) {
+    constructor(name, src, ipaSound) {
         this.name = name;
-        this.connection = connection;
+        this.connection = $('input#connection').val();
         this.src = src;
         this.deckName = $('#deckName').children('option:selected').val();
         this.filename = Util.getFileName(name);
@@ -275,6 +275,13 @@ class CardModel {
     }
     refreshDeskName() {
         this.deckName = $('#deckName').children('option:selected').val();
+    }
+    refreshConnection() {
+        this.connection = $('input#connection').val();
+    }
+    refresh() {
+        this.refreshDeskName();
+        this.refreshConnection();
     }
     setBase64(base64) {
         this.base64 = base64;
@@ -322,6 +329,8 @@ class PhpCall {
                 Input.setIpa($(this).text());
             })
             if (lang === 'en') {
+                /** Replace to for verb */
+                word = word.replace('to ', '');
                 var soundIPAUrls = $('.audiometa a', html);
             } else if (lang === 'de') {
                 var soundIPAUrls = $('.internal', html);
@@ -369,19 +378,18 @@ class PhpCall {
                 $('.cardImage').click(function () {
                     Util.showLoader();
                     var name = $('#name').val() ? $('#name').val() : '';
-                    var connection = $('#connection').val();
                     var src = $(this).attr('src');
                     var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
                     //var deckName = $('#deckName').children('option:selected').val();
                     //var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
-                    var card = new CardModel(name, connection, src, ipaSound);
+                    var card = new CardModel(name, src, ipaSound);
 
                     $.ajax('download_image.php', {
                         type: 'GET',
                         timeout: 5000,
                         data: { url: src, imgName: name },
                         success: function (data, status, xhr) {
-                            $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg');
+                            $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg?version='+Date.now());
                             Util.hideLoader();
                         },
                         fail: function (xhr, textStatus, errorThrown) {
@@ -451,7 +459,7 @@ $(function () {
         if (confirm('Inviare su Anki?')) {
             var name = $('#name').val() ? $('#name').val() : '';
             var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
-            var card = new CardModel(name, "", "", ipaSound);
+            var card = new CardModel(name, "", ipaSound);
             MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl), true);
         }
     })
