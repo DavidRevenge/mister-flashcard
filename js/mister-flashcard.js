@@ -369,7 +369,7 @@ class PhpCall {
                         timeout: 5000,
                         data: { url: src, imgName: name },
                         success: function (data, status, xhr) {
-                            $("#sampleImg").attr('src', 'img/' + name + '.jpg');
+                            $("#sampleImg").attr('src', 'img/download/' + name + '.jpg');
                         },
                         fail: function (xhr, textStatus, errorThrown) {
                             console.log('request base64 failed');
