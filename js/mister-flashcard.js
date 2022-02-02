@@ -4,7 +4,7 @@ const DOWNLOAD_FOLDER = 'img/download/';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.3.3
+ * @version 1.3.4
  */
 class MisterFlashcard {
     static setDecks() {
@@ -96,7 +96,7 @@ class MisterFlashcard {
     static sendToAnki(card) {
         MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl));
     }
-    static addSound(soundIPAHref, soundTitle = false) {
+    static addSound(soundIPAHref, soundTitle = false, radioButtonToCheck = false) {
         var player = document.getElementById("audio-container-player");
         player = $('#audio-container-player').clone().css('display', 'inline');
         $(player).children('source').attr('src', soundIPAHref);
@@ -104,7 +104,8 @@ class MisterFlashcard {
         if (soundTitle !== false) $(player).before('<h5>' + soundTitle + '</h5>');
         /* Spunto il primo audio della lista */
         var firstAudio = $('#audio-container').children('input[type=radio]');
-        $(firstAudio[0]).attr('checked', 'checked');
+        if (radioButtonToCheck === false) $(firstAudio[0]).attr('checked', 'checked');
+        else $(firstAudio[radioButtonToCheck]).attr('checked', 'checked');
     }
 }
 
@@ -413,7 +414,7 @@ class PhpCall {
         });
 
     }
-    static getIpaSound(url = false, soundTitle = false, otherWebsite = false) {
+    static getIpaSound(url = false, soundTitle = false, otherWebsite = false, radioButtonToCheck = false) {
         if (otherWebsite === true) {
             jQuery.get('get_ipa_sound.php', { url: url, otherWebsite: true }, function (data) {
                 var soundHtml = $.parseHTML(data);
@@ -423,7 +424,8 @@ class PhpCall {
                 Ipa.prepend(ipa);
                 Input.setIpa(ipa);
 
-                MisterFlashcard.addSound(soundIPAHref, soundTitle);
+                if (radioButtonToCheck === false) MisterFlashcard.addSound(soundIPAHref, soundTitle);
+                else MisterFlashcard.addSound(soundIPAHref, soundTitle, radioButtonToCheck);
             });
         } else {
             jQuery.get('get_ipa_sound.php', { url: url }, function (data) {
@@ -462,5 +464,9 @@ $(function () {
             var card = new CardModel(name, "", ipaSound);
             MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl), true);
         }
-    })
+    });
+    document.getElementById('getOxfordSound').addEventListener('click', function () {
+        var word = document.getElementById('word').value;
+        PhpCall.getIpaSound(word, 'Oxford Sound', true, 1);
+    });
 });
