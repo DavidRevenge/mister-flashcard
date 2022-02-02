@@ -414,7 +414,8 @@ class PhpCall {
         });
 
     }
-    static getIpaSound(url = false, soundTitle = false, otherWebsite = false, radioButtonToCheck = false) {
+    static getIpaSound(url = false, soundTitle = false, otherWebsite = false, radioButtonToCheck = false) {        
+        Util.showLoader();
         if (otherWebsite === true) {
             jQuery.get('get_ipa_sound.php', { url: url, otherWebsite: true }, function (data) {
                 var soundHtml = $.parseHTML(data);
@@ -426,12 +427,14 @@ class PhpCall {
 
                 if (radioButtonToCheck === false) MisterFlashcard.addSound(soundIPAHref, soundTitle);
                 else MisterFlashcard.addSound(soundIPAHref, soundTitle, radioButtonToCheck);
+                Util.hideLoader();
             });
         } else {
             jQuery.get('get_ipa_sound.php', { url: url }, function (data) {
                 var soundHtml = $.parseHTML(data);
                 var soundIPAHref = 'https:' + $('.internal', soundHtml).attr('href');
                 MisterFlashcard.addSound(soundIPAHref, soundTitle);
+                Util.hideLoader();
             });
         }
     }
