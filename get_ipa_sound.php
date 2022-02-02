@@ -1,6 +1,6 @@
 <?php
 
-xdebug_break();
+if (function_exists('xdebug_break')) xdebug_break();
 
 $url = empty($_GET['url']) ? 'language' : $_GET['url'];
 
