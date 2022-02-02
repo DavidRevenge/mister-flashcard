@@ -285,14 +285,15 @@ class CardModel {
     refreshConnection() {
         this.connection = $('input#connection').val();
     }
-    refreshSoundUrl() {
+    refreshIpa() {
         this.ipa.soundUrl = $('input[name="ipaSoundRB"]:checked').val();
+        this.ipa.text = $('input#ipa').val();
     }
     refresh() {
         this.refreshDeskName();
         this.refreshConnection();
         this.refreshName();
-        this.refreshSoundUrl();
+        this.refreshIpa();
     }
     setBase64(base64) {
         this.base64 = base64;
