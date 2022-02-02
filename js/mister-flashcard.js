@@ -4,7 +4,7 @@ const DOWNLOAD_FOLDER = 'img/download/';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.3.4
+ * @version 1.3.6
  */
 class MisterFlashcard {
     static setDecks() {
@@ -67,7 +67,9 @@ class MisterFlashcard {
     static retrieveDeckNames() {
         return MisterFlashcard.invoke('deckNames', 6);
     }
-    static addCard(card, filename, sound, minimalPairs = false) {
+    static addCard(card, filename, minimalPairs = false) {
+        card.refresh();
+        var sound = new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl);
         Util.showLoader();
         if (minimalPairs === true) {
             MisterFlashcard.invokeAddNote(card, filename, sound, minimalPairs);
@@ -94,7 +96,7 @@ class MisterFlashcard {
         });
     }
     static sendToAnki(card) {
-        MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl));
+        MisterFlashcard.addCard(card, card.filename) //, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl));
     }
     static addSound(soundIPAHref, soundTitle = false, radioButtonToCheck = false) {
         var player = document.getElementById("audio-container-player");
@@ -265,24 +267,32 @@ class CardModel {
         soundUrl: ""
     }
     base64 = false;
-    constructor(name, src, ipaSound) {
-        this.name = name;
+    constructor(src) {
+        this.name = $('input#name').val();
         this.connection = $('input#connection').val();
         this.src = src;
         this.deckName = $('#deckName').children('option:selected').val();
-        this.filename = Util.getFileName(name);
+        this.filename = Util.getFileName(this.name);
         this.ipa.text = $('input#ipa').val();
-        this.ipa.soundUrl = ipaSound;
+        this.ipa.soundUrl = $('input[name="ipaSoundRB"]:checked').val();
     }
     refreshDeskName() {
         this.deckName = $('#deckName').children('option:selected').val();
     }
+    refreshName() {
+        this.name = $('input#name').val();
+    }
     refreshConnection() {
         this.connection = $('input#connection').val();
+    }
+    refreshSoundUrl() {
+        this.ipa.soundUrl = $('input[name="ipaSoundRB"]:checked').val();
     }
     refresh() {
         this.refreshDeskName();
         this.refreshConnection();
+        this.refreshName();
+        this.refreshSoundUrl();
     }
     setBase64(base64) {
         this.base64 = base64;
@@ -380,10 +390,10 @@ class PhpCall {
                     Util.showLoader();
                     var name = $('#name').val() ? $('#name').val() : '';
                     var src = $(this).attr('src');
-                    var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
+                    //var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
                     //var deckName = $('#deckName').children('option:selected').val();
                     //var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
-                    var card = new CardModel(name, src, ipaSound);
+                    var card = new CardModel(src);
 
                     $.ajax('download_image.php', {
                         type: 'GET',
@@ -462,10 +472,10 @@ $(function () {
     });
     document.getElementById('addMinimalPairs').addEventListener('click', function () {
         if (confirm('Inviare su Anki?')) {
-            var name = $('#name').val() ? $('#name').val() : '';
-            var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
-            var card = new CardModel(name, "", ipaSound);
-            MisterFlashcard.addCard(card, card.filename, new SoundModel(card.ipa.text, card.filename + '.mp3', card.ipa.soundUrl), true);
+          //  var name = $('#name').val() ? $('#name').val() : '';
+            // var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
+            var card = new CardModel("");
+            MisterFlashcard.addCard(card, card.filename, true);
         }
     });
     document.getElementById('getOxfordSound').addEventListener('click', function () {
