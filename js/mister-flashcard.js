@@ -4,7 +4,7 @@ const DOWNLOAD_FOLDER = 'img/download/';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.3.6
+ * @version 1.4.0
  */
 class MisterFlashcard {
     static setDecks() {
@@ -92,7 +92,8 @@ class MisterFlashcard {
             note: note
         }).then(result => {
             Util.hideLoader();
-            alert('Card successfully added!');
+            // alert('Card successfully added!');
+            Util.showToast('Card successfully added!');
         });
     }
     static sendToAnki(card) {
@@ -301,6 +302,12 @@ class CardModel {
 
 }
 class Util {
+    static showToast(message) {
+        var result = 'Result';
+        $('.toast .title').html(result);
+        $('.toast .toast-body').html(message);
+        $('.toast').toast('show');
+    }
     static cleanBase64(base64) {
         var base64 = base64.replace("data:image/png;base64,", "");
         return base64 = base64.replace("data:image/jpeg;base64,", "");
@@ -483,4 +490,7 @@ $(function () {
         var word = document.getElementById('word').value;
         PhpCall.getIpaSound(word, 'Oxford Sound', true, 1);
     });
+    // $(document).ready(function(){
+    //     $('.toast').toast('show');
+    //   });
 });

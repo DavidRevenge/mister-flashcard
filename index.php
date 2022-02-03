@@ -13,7 +13,7 @@
 
 <body>
     <div class="container-fluid">
-    <div class="loader"></div>
+        <div class="loader"></div>
         <div class="row">
             <div class="col-12 col-lg-6 p-4">
                 <fieldset>
@@ -40,8 +40,8 @@
                     </p>
                     <form action="#">
                         <div style="border: 2px dashed black; display: inline-block; padding: 1rem;" id="audio-container">
-                            
-                        </div>                        
+
+                        </div>
                     </form>
                     <button id="getOxfordSound" class="m-2">Get Oxford Sound</button>
                     <audio style="display:none" id="audio-container-player" controls>
@@ -87,6 +87,30 @@
             </div>
         </div>
     </div>
+
+
+
+
+    </div>
+
+    <div class="toastBox" aria-live="polite" aria-atomic="true">
+
+        <!-- Then put toasts within -->
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"  data-autohide="true" data-delay="3000" >
+            <div class="toast-header">
+                <strong class="mr-auto title"></strong>
+                <small class="text-muted"></small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+               
+            </div>
+        </div>
+    </div>
+
+
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/croppie.min.js"></script>
