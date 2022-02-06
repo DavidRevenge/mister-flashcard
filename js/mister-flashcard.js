@@ -4,7 +4,7 @@ const DOWNLOAD_FOLDER = 'img/download/';
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
 /**
- * @version 1.5.0
+ * @version 1.5.1
  */
 class MisterFlashcard {
     static setDecks() {
@@ -520,6 +520,9 @@ class PhpCall {
                             });
                             document.getElementById('addCalendar').addEventListener('click', function () {
                                 $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '_calendar.jpg?version=' + Date.now());
+                            });
+                            document.getElementById('removeSticker').addEventListener('click', function () {
+                                $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg?version=' + Date.now());
                             });
                             Util.hideLoader();
                         },

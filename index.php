@@ -76,6 +76,7 @@
                        <!-- <img id="openCropSampleImg" src="img/cut.svg"> -->
                        <img id="addStar" src="img/star-icon.png">
                        <img id="addCalendar" src="img/calendar-icon.png">
+                       <img id="removeSticker" src="img/remove.svg">
                    </div>
                 </div>
                 <div class="ipaBox pt-3 mb-5">
