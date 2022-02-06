@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/croppie.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    
 </head>
 
 <body>
@@ -71,6 +72,11 @@
                 <hr />
                 <div id="imgBox" class="imgBox">
                    <img id="sampleImg" class="sample-img" src="img/sample.jpg">
+                   <div class="toolBox">
+                       <!-- <img id="openCropSampleImg" src="img/cut.svg"> -->
+                       <img id="addStar" src="img/star-icon.png">
+                       <img id="addCalendar" src="img/calendar-icon.png">
+                   </div>
                 </div>
                 <div class="ipaBox pt-3 mb-5">
                     <span>/ipa/</span>
@@ -80,6 +86,7 @@
                 <button id="sendToAnkiOnCrop" class="btn btn-primary w-50 mb-5 d-none">Send</button>
                 <button id="sendToAnki" class="btn btn-primary w-50 mb-5">Send</button>
             </div>
+            
         </div>
         <div class="row">
             <div id="search-container">
@@ -115,6 +122,8 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/croppie.min.js"></script>
     <script src="js/mister-flashcard.js"></script>
+
+
 </body>
 
 </html>

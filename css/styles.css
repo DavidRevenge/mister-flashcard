@@ -1,3 +1,21 @@
+.toolBox {
+    width: 80px;
+    height: 214px;
+    position: absolute;
+    top: 78px;
+    right: 0;
+}
+.toolBox img {
+    width: 80px;
+    cursor: pointer;
+    transition: width 0.2s linear 0s;
+}
+.toolBox img:hover {
+    width: 90px;
+}
+.toolBox img:not(:first-child) {
+    margin-top: 2rem;
+}
 .toastBox {
     position: fixed;
     top: 20px;
