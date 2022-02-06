@@ -1,6 +1,6 @@
 <?php
 
-xdebug_break();
+if (function_exists('xdebug_break')) xdebug_break();
 
 $url = empty($_GET['url']) ? 'language' : $_GET['url'];
 
@@ -22,7 +22,7 @@ curl_setopt($curl_handle, CURLOPT_URL, $url);
 curl_setopt($curl_handle, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
 curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl_handle, CURLOPT_USERAGENT, 'AnkiDaddo');
+curl_setopt($curl_handle, CURLOPT_USERAGENT, 'github_com_DavidRevenge_mister-flashcard');
 $query = curl_exec($curl_handle);
 curl_close($curl_handle);
 
