@@ -192,6 +192,9 @@ class Input {
         $('#name').val(name);
         Preview.setName(name);
     }
+    static setConnection(name) {
+        $('#connection').val(name);
+    }
 }
 class PictureWordsModel {
     "deckName" = "";
@@ -489,6 +492,7 @@ class PhpCall {
             data: { word: word },
             success: function (data, status, xhr) {
                 Util.hideLoader();
+                Input.setConnection('');
                 data = data.split("\\/").join('/');
                 data = JSON.parse(data).data;
 
@@ -504,9 +508,6 @@ class PhpCall {
                     Util.showLoader();
                     var name = $('#name').val() ? $('#name').val() : '';
                     var src = $(this).attr('src');
-                    //var ipaSound = $('input[name="ipaSoundRB"]:checked').val();
-                    //var deckName = $('#deckName').children('option:selected').val();
-                    //var card = new CardModel(name, connection, src, deckName, $('input#ipa').val(), ipaSound);
                     var card = new CardModel(src);
 
                     $.ajax('download_image.php', {
@@ -540,6 +541,7 @@ class PhpCall {
                     });
 
                 });
+                $('.cardImage').first().click();
             },
             fail: function (xhr, textStatus, errorThrown) {
                 console.log('request failed');
