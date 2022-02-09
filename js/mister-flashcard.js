@@ -541,7 +541,7 @@ class PhpCall {
                     });
 
                 });
-                $('.cardImage').first().click();
+               // $('.cardImage').first().click();
             },
             fail: function (xhr, textStatus, errorThrown) {
                 console.log('request failed');
