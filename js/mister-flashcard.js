@@ -444,7 +444,7 @@ class Sticker {
 class Listener extends Sticker {
     constructor(name) {
         super(name);
-    }    
+    } 
     numbers() {
         super.addClickListener('number_1', '_1.jpg');
         super.addClickListener('number_2', '_2.jpg');
@@ -627,6 +627,7 @@ $(function () {
         createStickers = this.checked;
         if (this.checked) $('.numberBox, .toolBox').removeClass('d-none');
         else $('.numberBox, .toolBox').addClass('d-none');
+        $('#sampleImg').attr('src', 'img/sample.jpg');
     });    
     document.getElementById('ipa').addEventListener('keyup', function () {
         Preview.setIpa(this.value);
