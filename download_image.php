@@ -20,6 +20,15 @@ file_put_contents($img, file_get_contents($url));
 
 addWatermark($img, 'img/star-icon.png', '_star');
 addWatermark($img, 'img/calendar-icon.png', '_calendar');
+addWatermark($img, 'img/numbers/1.png', '_1');
+addWatermark($img, 'img/numbers/2.png', '_2');
+addWatermark($img, 'img/numbers/3.png', '_3');
+addWatermark($img, 'img/numbers/4.png', '_4');
+addWatermark($img, 'img/numbers/5.png', '_5');
+addWatermark($img, 'img/numbers/6.png', '_6');
+addWatermark($img, 'img/numbers/7.png', '_7');
+addWatermark($img, 'img/numbers/8.png', '_8');
+addWatermark($img, 'img/numbers/9.png', '_9');
 
 //addWatermark();
 

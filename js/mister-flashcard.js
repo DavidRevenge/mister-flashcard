@@ -162,12 +162,6 @@ class Preview {
         $('#sendToAnki').removeClass('d-none');
     }
 }
-// class Card {
-//     static setName(name) {
-//         $('#name').val(name);
-//         $('.nameBox span').text(name);
-//     }
-// }
 class Ipa {
     static append(text, title) {
         $('#ipa-container').append('<h5>' + title + '</h5><a href="#" class="searchedIPA" style="font-size: 1.5rem;">' + text + '</a><br />');
@@ -278,12 +272,6 @@ class CardModel {
         this.connection = $('input#connection').val();
 
         this.src = window.location.href + $('#sampleImg').attr('src');
-        // Util.toDataURL(
-        //     this.src,
-        //     function(dataUrl) {
-        //       console.log('RESULT:', dataUrl)
-        //     }
-        //   )
 
         this.deckName = $('#deckName').children('option:selected').val();
         this.filename = Util.getFileName(this.name);
@@ -437,6 +425,44 @@ class Util {
     $('.loader').removeClass('on');
 }
 }
+class Sticker {
+    name = "";
+    constructor(name) {
+        this.name = name;
+    }
+    addClickListener(id, suffix) {
+        var that = this;
+        document.getElementById(id).addEventListener('click', function () {
+            $("#sampleImg").attr('src', DOWNLOAD_FOLDER + that.name + suffix + '?version=' + Date.now());
+        });
+    }
+}
+
+class Listener extends Sticker {
+    constructor(name) {
+        super(name);
+    }    
+    numbers() {
+        super.addClickListener('number_1', '_1.jpg');
+        super.addClickListener('number_2', '_2.jpg');
+        super.addClickListener('number_3', '_3.jpg');
+        super.addClickListener('number_4', '_4.jpg');
+        super.addClickListener('number_5', '_5.jpg');
+        super.addClickListener('number_6', '_6.jpg');
+        super.addClickListener('number_7', '_7.jpg');
+        super.addClickListener('number_8', '_8.jpg');
+        super.addClickListener('number_9', '_9.jpg');
+    }
+    star() {
+        super.addClickListener('addStar', '_star.jpg');
+    }
+    calendar() {
+        super.addClickListener('addCalendar', '_calendar.jpg');
+    }
+    removeSticker() {
+        super.addClickListener('removeSticker', '.jpg');
+    }
+}
 class PhpCall {
     static searchIPA(word) {
         word = word.trim();
@@ -516,15 +542,14 @@ class PhpCall {
                         data: { url: src, imgName: name },
                         success: function (data, status, xhr) {
                             $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg?version=' + Date.now());
-                            document.getElementById('addStar').addEventListener('click', function () {
-                                $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '_star.jpg?version=' + Date.now());
-                            });
-                            document.getElementById('addCalendar').addEventListener('click', function () {
-                                $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '_calendar.jpg?version=' + Date.now());
-                            });
-                            document.getElementById('removeSticker').addEventListener('click', function () {
-                                $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg?version=' + Date.now());
-                            });
+                           
+                            var listener = new Listener(name);                            
+
+                            listener.numbers();
+                            listener.star();
+                            listener.calendar();
+                            listener.removeSticker();
+
                             Util.hideLoader();
                         },
                         fail: function (xhr, textStatus, errorThrown) {

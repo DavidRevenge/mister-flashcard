@@ -73,10 +73,20 @@
                 <div id="imgBox" class="imgBox">
                    <img id="sampleImg" class="sample-img" src="img/sample.jpg">
                    <div class="toolBox">
-                       <!-- <img id="openCropSampleImg" src="img/cut.svg"> -->
                        <img id="addStar" src="img/star-icon.png">
                        <img id="addCalendar" src="img/calendar-icon.png">
                        <img id="removeSticker" src="img/remove.svg">
+                   </div>
+                   <div class="numberBox">
+                       <img id="number_1" src="img/numbers/1.png">
+                       <img id="number_2" src="img/numbers/2.png">
+                       <img id="number_3" src="img/numbers/3.png">
+                       <img id="number_4" src="img/numbers/4.png">
+                       <img id="number_5" src="img/numbers/5.png">
+                       <img id="number_6" src="img/numbers/6.png">
+                       <img id="number_7" src="img/numbers/7.png">
+                       <img id="number_8" src="img/numbers/8.png">
+                       <img id="number_9" src="img/numbers/9.png">
                    </div>
                 </div>
                 <div class="ipaBox pt-3 mb-5">

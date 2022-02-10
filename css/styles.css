@@ -1,3 +1,19 @@
+.numberBox {
+    width: 80px;
+    height: 214px;
+    position: absolute;
+    top: 78px;
+    right: -101px;
+}
+.numberBox img {
+    width: 30px;
+    cursor: pointer;
+    margin: 3px;
+    transition: width 0.2s linear 0s;
+}
+.numberBox img:hover {
+    width: 33px;
+}
 .toolBox {
     width: 80px;
     height: 214px;
