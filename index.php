@@ -63,6 +63,12 @@
                     <option value="en">English</option>
                     <option value="de">German</option>
                 </select>
+                <div class="form-check mt-5">
+                    <input class="form-check-input" type="checkbox" value="" id="createStickers">
+                    <label class="form-check-label" for="createStickers">
+                        Create stickers
+                    </label>
+                </div>
 
             </div>
             <div id="preview" class="col-12 col-md-4 pt-4 text-center">
@@ -72,12 +78,12 @@
                 <hr />
                 <div id="imgBox" class="imgBox">
                    <img id="sampleImg" class="sample-img" src="img/sample.jpg">
-                   <div class="toolBox">
+                   <div class="toolBox d-none">
                        <img id="addStar" src="img/star-icon.png">
                        <img id="addCalendar" src="img/calendar-icon.png">
                        <img id="removeSticker" src="img/remove.svg">
                    </div>
-                   <div class="numberBox">
+                   <div class="numberBox d-none">
                        <img id="number_1" src="img/numbers/1.png">
                        <img id="number_2" src="img/numbers/2.png">
                        <img id="number_3" src="img/numbers/3.png">
@@ -87,6 +93,9 @@
                        <img id="number_7" src="img/numbers/7.png">
                        <img id="number_8" src="img/numbers/8.png">
                        <img id="number_9" src="img/numbers/9.png">
+                       <img id="number_10" src="img/numbers/10.png">
+                       <img id="number_11" src="img/numbers/11.png">
+                       <img id="number_12" src="img/numbers/12.png">
                    </div>
                 </div>
                 <div class="ipaBox pt-3 mb-5">

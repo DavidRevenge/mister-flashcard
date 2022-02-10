@@ -11,6 +11,9 @@
     margin: 3px;
     transition: width 0.2s linear 0s;
 }
+.numberBox #number_10, .numberBox #number_11, .numberBox #number_12 {
+    width: 100px;
+}
 .numberBox img:hover {
     width: 33px;
 }

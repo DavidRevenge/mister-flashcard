@@ -3,6 +3,8 @@ const DOWNLOAD_FOLDER = 'img/download/';
 
 var defaultDeck = (!!localStorage.getItem('defaultDeck')) ? localStorage.getItem('defaultDeck') : false;
 
+var createStickers = false;
+
 /**
  * @version 1.5.1
  */
@@ -267,7 +269,7 @@ class CardModel {
         soundUrl: ""
     }
     base64 = false;
-    constructor(src) {
+    constructor() {
         this.name = $('input#name').val();
         this.connection = $('input#connection').val();
 
@@ -292,7 +294,8 @@ class CardModel {
         this.ipa.text = $('input#ipa').val();
     }
     refreshSrc() {
-        this.src = window.location.href +$('#sampleImg').attr('src');
+        var location = window.location.href.replace('#', '');
+        this.src = location +$('#sampleImg').attr('src');
     }
     refresh() {
         this.refreshDeskName();
@@ -452,6 +455,9 @@ class Listener extends Sticker {
         super.addClickListener('number_7', '_7.jpg');
         super.addClickListener('number_8', '_8.jpg');
         super.addClickListener('number_9', '_9.jpg');
+        super.addClickListener('number_10', '_10.jpg');
+        super.addClickListener('number_11', '_11.jpg');
+        super.addClickListener('number_12', '_12.jpg');
     }
     star() {
         super.addClickListener('addStar', '_star.jpg');
@@ -534,12 +540,12 @@ class PhpCall {
                     Util.showLoader();
                     var name = $('#name').val() ? $('#name').val() : '';
                     var src = $(this).attr('src');
-                    var card = new CardModel(src);
+                    var card = new CardModel();
 
                     $.ajax('download_image.php', {
                         type: 'GET',
                         timeout: 5000,
-                        data: { url: src, imgName: name },
+                        data: { url: src, imgName: name, createStickers: createStickers },
                         success: function (data, status, xhr) {
                             $("#sampleImg").attr('src', DOWNLOAD_FOLDER + name + '.jpg?version=' + Date.now());
                            
@@ -617,6 +623,11 @@ $(function () {
     document.getElementById('deckName').addEventListener('change', function () {
         localStorage.setItem('defaultDeck', this.value);
     });
+    document.getElementById('createStickers').addEventListener('change', function () {
+        createStickers = this.checked;
+        if (this.checked) $('.numberBox, .toolBox').removeClass('d-none');
+        else $('.numberBox, .toolBox').addClass('d-none');
+    });    
     document.getElementById('ipa').addEventListener('keyup', function () {
         Preview.setIpa(this.value);
     });
