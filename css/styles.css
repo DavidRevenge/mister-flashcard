@@ -1,3 +1,7 @@
+.cursor-pointer { cursor: pointer; }
+.strike {
+    text-decoration-line: line-through;
+}
 .numberBox {
     width: 80px;
     height: 214px;

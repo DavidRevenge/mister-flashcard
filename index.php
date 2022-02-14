@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="loader"></div>
         <div class="row">
-            <div class="col-12 col-lg-6 p-4">
+            <div class="col-12 col-md-4 p-4">
                 <fieldset>
                     <p>
                         <label for="name">Name: </label>
@@ -71,7 +71,10 @@
                 </div>
 
             </div>
-            <div id="preview" class="col-12 col-md-4 pt-4 text-center">
+            <div id="note" class="col-12 col-md-2 p-4 border">
+                
+            </div>
+            <div id="preview" class="col-12 col-md-6 pt-4 text-center">
                 <div class="nameBox">
                      <span>Name</span>
                 </div>
@@ -138,9 +141,9 @@
     </div>
 
 
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/croppie.min.js"></script>
+    <script src="js/extra/jquery-3.4.1.min.js"></script>
+    <script src="js/extra/bootstrap.min.js"></script>
+    <script src="js/extra/croppie.min.js"></script>
     <script src="js/mister-flashcard.js"></script>
 
 
