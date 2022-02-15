@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="loader"></div>
         <div class="row">
-            <div class="col-12 col-md-4 p-4">
+            <div class="col-12 col-md-3 p-4">
                 <fieldset>
                     <p>
                         <label for="name">Name: </label>
@@ -71,10 +71,7 @@
                 </div>
 
             </div>
-            <div id="note" class="col-12 col-md-2 p-4 border">
-                
-            </div>
-            <div id="preview" class="col-12 col-md-6 pt-4 text-center">
+            <div id="preview" class="col-12 col-md-7 pt-4 text-center">
                 <div class="nameBox">
                      <span>Name</span>
                 </div>
@@ -108,6 +105,11 @@
                 <button id="closeCropSampleImg" class="btn btn-danger w-50 mb-5 d-none">Close Crop</button>
                 <button id="sendToAnkiOnCrop" class="btn btn-primary w-50 mb-5 d-none">Send</button>
                 <button id="sendToAnki" class="btn btn-primary w-50 mb-5">Send</button>
+            </div>
+            <div id="note" class="col-12 col-md-2 p-4 border">
+                <div id="listBox">
+
+                </div>
             </div>
             
         </div>

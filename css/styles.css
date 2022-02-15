@@ -48,6 +48,7 @@
 .sample-img {
     width: 300px;
 }
+#note { z-index: 99999;}
 #preview .nameBox span {
     font-size: 1.3rem;
 }
