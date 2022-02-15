@@ -1,5 +1,5 @@
 class Note {
-    list = [];
+    list =  JSON.parse(localStorage.getItem('noteList')); //['First', 'Second', 'Third'];
     ul = '';
     input = '';
     constructor() {
@@ -7,9 +7,10 @@ class Note {
         this.refresh();
         this.addInput();
         this.addButton();
+        this.loadList();
     }
-    add(text) {
-        if (this.checkInput(text)) {
+    add(text, notValidate = false, id) {
+        if ((this.checkInput(text) || notValidate === true)) {
             var li = document.createElement('li');
             var deleteIcon  = document.createElement('span');
             deleteIcon.setAttribute('style', 'color: red; font-weight: bold;');
@@ -21,9 +22,12 @@ class Note {
             li.querySelector('.text').addEventListener('click', function () {
                 that.strike(this);
             });
+            deleteIcon.setAttribute('data-id', id);
             deleteIcon.addEventListener('click', function () {
                 li.remove();
+                that.removeFromList(id);
             });
+            li.setAttribute('id', id);
             li.append(deleteIcon);
             this.ul.append(li);
             this.refresh();
@@ -36,6 +40,18 @@ class Note {
     refresh() {
         document.getElementById('listBox').append(this.ul);
     }
+    removeFromList(id) {
+        this.list = this.list.filter(elem => elem.id !== id);
+        localStorage.setItem('noteList', JSON.stringify(this.list));
+    }
+    addToList(text, id) {
+        var object = {
+            id: id,
+            text: text
+        }
+        this.list.push(object);
+        localStorage.setItem('noteList', JSON.stringify(this.list));
+    }
     addInput() {
         var input = document.createElement('input');
         input.setAttribute('autocomplete', 'off' + new Date().getTime());
@@ -43,7 +59,9 @@ class Note {
         var that = this;
         this.input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
-                that.add(that.input.value);
+                // that.add(that.input.value);
+                // that.addToList(that.input.value);
+                that.completeAdd();
             }
         });
         document.getElementById('note').append(this.input);
@@ -54,13 +72,28 @@ class Note {
         button.setAttribute('style', 'margin-left: 0.5rem');
         var that = this;
         button.addEventListener('click', function () {
-            that.add(that.input.value);
+            //var id = Util.makeid(10);
+            // that.add(that.input.value, false, id);
+            // that.addToList(that.input.value, id);
+            that.completeAdd();
         });
         document.getElementById('note').append(button);
+    }
+    completeAdd() {
+        var id = Util.makeid(10);
+        this.add(this.input.value, false, id);
+        this.addToList(this.input.value, id);
     }
     checkInput() {
         if (this.input.value.trim() === "") return false;
         else return true;
+    }
+    loadList() {
+        //localStorage.setItem("noteList", JSON.stringify(this.list));
+        var that = this;
+        this.list.forEach(function(elem) {
+            that.add(elem.text, true, elem.id);
+        });
     }
 
 }
