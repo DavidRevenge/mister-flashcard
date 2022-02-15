@@ -1,6 +1,3 @@
-var json = "{
-sdfasdfsd
-}";
 class Note {
     list = [];
     ul = '';
