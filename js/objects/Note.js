@@ -1,5 +1,5 @@
 class Note {
-    list =  JSON.parse(localStorage.getItem('noteList')); //['First', 'Second', 'Third'];
+    list = JSON.parse(localStorage.getItem('noteList')); //['First', 'Second', 'Third'];
     ul = '';
     input = '';
     constructor() {
@@ -9,19 +9,20 @@ class Note {
         this.addButton();
         this.loadList();
     }
-    add(text, notValidate = false, id) {
+    add(text, notValidate = false, id, strike = false) {
         if ((this.checkInput(text) || notValidate === true)) {
             var li = document.createElement('li');
-            var deleteIcon  = document.createElement('span');
+            var deleteIcon = document.createElement('span');
             deleteIcon.setAttribute('style', 'color: red; font-weight: bold;');
             deleteIcon.innerHTML = 'X';
             deleteIcon.style.marginLeft = '0.5rem';
             li.classList.add('cursor-pointer');
-            li.innerHTML = '<span class="text">'+text+'</span>';
+            li.innerHTML = '<span class="text">' + text + '</span>';
             var that = this;
             li.querySelector('.text').addEventListener('click', function () {
-                that.strike(this);
+                that.strike(this, id);
             });
+            if (strike === true) li.querySelector('.text').click();
             deleteIcon.setAttribute('data-id', id);
             deleteIcon.addEventListener('click', function () {
                 li.remove();
@@ -33,24 +34,34 @@ class Note {
             this.refresh();
         }
     }
-    strike(text) {
-        if (!text.classList.contains('strike')) text.classList.add('strike');
-        else text.classList.remove('strike');
+    strike(text, id) {
+        if (!text.classList.contains('strike')) {
+            this.list.forEach(elem => {
+                if (elem.id === id) elem.strike = true;
+            });
+            text.classList.add('strike');
+        } else {
+            this.list.forEach(elem => {
+                if (elem.id === id) elem.strike = false;
+            });
+            text.classList.remove('strike');
+        }
+        this.saveList();
+    }
+    saveList() {
+        localStorage.setItem('noteList', JSON.stringify(this.list));
     }
     refresh() {
         document.getElementById('listBox').append(this.ul);
     }
     removeFromList(id) {
         this.list = this.list.filter(elem => elem.id !== id);
-        localStorage.setItem('noteList', JSON.stringify(this.list));
+        this.saveList();
     }
     addToList(text, id) {
-        var object = {
-            id: id,
-            text: text
-        }
+        var object = new NoteModel(id, text);
         this.list.push(object);
-        localStorage.setItem('noteList', JSON.stringify(this.list));
+        this.saveList();
     }
     addInput() {
         var input = document.createElement('input');
@@ -59,8 +70,6 @@ class Note {
         var that = this;
         this.input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
-                // that.add(that.input.value);
-                // that.addToList(that.input.value);
                 that.completeAdd();
             }
         });
@@ -72,9 +81,6 @@ class Note {
         button.setAttribute('style', 'margin-left: 0.5rem');
         var that = this;
         button.addEventListener('click', function () {
-            //var id = Util.makeid(10);
-            // that.add(that.input.value, false, id);
-            // that.addToList(that.input.value, id);
             that.completeAdd();
         });
         document.getElementById('note').append(button);
@@ -89,10 +95,9 @@ class Note {
         else return true;
     }
     loadList() {
-        //localStorage.setItem("noteList", JSON.stringify(this.list));
         var that = this;
-        this.list.forEach(function(elem) {
-            that.add(elem.text, true, elem.id);
+        this.list.forEach(function (elem) {
+            that.add(elem.text, true, elem.id, elem.strike);
         });
     }
 
