@@ -110,6 +110,7 @@ class MisterFlashcard {
         /* Spunto il primo audio della lista */
         var firstAudio = $('#audio-container').children('input[type=radio]');
         if (radioButtonToCheck === false) $(firstAudio[0]).attr('checked', 'checked');
+        else if (radioButtonToCheck !== false) $(firstAudio[radioButtonToCheck]).attr('checked', 'checked');
         else $(firstAudio[radioButtonToCheck]).attr('checked', 'checked');
     }    
     static addScript(src) {

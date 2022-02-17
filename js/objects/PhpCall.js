@@ -116,7 +116,7 @@ class PhpCall {
                 var soundHtml = $.parseHTML(data);
                 var soundIPAHref = $('.phons_br', soundHtml).find('.pron-uk').attr('data-src-ogg');
 
-                if ( ! soundIPAHref && url.indexOf('_1') < 0) PhpCall.getIpaSound(url + '_1', 'Oxford Sound', true);
+                if ( ! soundIPAHref && url.indexOf('_1') < 0) PhpCall.getIpaSound(url + '_1', 'Oxford Sound', true, 1);
 
                 var ipa = $('.phons_br', soundHtml).find('.phon').text();
                 Ipa.prepend(ipa);
