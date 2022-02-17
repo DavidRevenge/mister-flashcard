@@ -89,6 +89,7 @@ class Note {
         var id = Util.makeid(10);
         this.add(this.input.value, false, id);
         this.addToList(this.input.value, id);
+        document.querySelector('#note input').value = '';
     }
     checkInput() {
         if (this.input.value.trim() === "") return false;
