@@ -8,6 +8,7 @@
     position: absolute;
     top: 78px;
     right: -101px;
+    z-index: 1011;
 }
 .numberBox img {
     width: 30px;
@@ -41,14 +42,14 @@
 }
 .toastBox {
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     width: 300px;
 }
 .sample-img {
     width: 300px;
 }
-#note { z-index: 99999;}
+#note { z-index: 1010;}
 #preview .nameBox span {
     font-size: 1.3rem;
 }
