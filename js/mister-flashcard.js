@@ -147,7 +147,7 @@ $(function () {
         createStickers = this.checked;
         if (this.checked) $('.numberBox, .toolBox').removeClass('d-none');
         else $('.numberBox, .toolBox').addClass('d-none');
-        $('#sampleImg').attr('src', 'img/sample.jpg');
+      //  $('#sampleImg').attr('src', 'img/sample.jpg');
     });    
     document.getElementById('ipa').addEventListener('keyup', function () {
         Preview.setIpa(this.value);
